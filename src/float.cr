@@ -32,15 +32,29 @@
 # ```
 struct Float
   alias Primitive = Float32 | Float64
-
+  
+  # Return the modulo after division of float by *other*.
+  #
+  # ```
+  # 6543.21 % 137      #=> 104.21
+  # 6543.21 % 137.24   #=> 92.93
+  # ```
   def %(other)
     modulo(other)
   end
-
+  
   def nan?
     !(self == self)
   end
 
+  # Return values corresponding to the value of float.
+  #
+  # For example :
+  # ```
+  # (42.0).infinite?       # => nil
+  # (-42.0/0.0).infinite? # => -1
+  # (+42.0/0.0).infinite? # => 1
+  # ```
   def infinite?
     if nan? || self == 0 || self != 2 * self
       nil
@@ -49,6 +63,12 @@ struct Float
     end
   end
 
+  # Returns true if float is a finite number
+  #
+  # ```
+  # puts (42.0).finite?     # => true
+  # puts (42.0/0.0).finite? # => false
+  # ```
   def finite?
     !nan? && !infinite?
   end
@@ -57,6 +77,12 @@ struct Float
     self / other
   end
 
+  # Return the modulo after division of float by *other*.
+  #
+  # ```
+  # 6543.21.modulo(137)      #=> 104.21
+  # 6543.21.modulo(137.24)   #=> 92.93
+  # ```
   def modulo(other)
     if other == 0.0
       raise DivisionByZero.new
@@ -64,7 +90,13 @@ struct Float
       self - other * self.fdiv(other).floor
     end
   end
-
+  
+  # Return the remainder after division of float by *other*.
+  #
+  # ```
+  # 6543.21.remainder(-137)  #=> -32.79
+  # 6543.21.remainder(137)   #=> 104.21
+  # ```
   def remainder(other)
     if other == 0.0
       raise DivisionByZero.new
